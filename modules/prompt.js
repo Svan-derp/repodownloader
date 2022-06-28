@@ -1,20 +1,24 @@
 import prompts from 'prompts';
 
-import {setRepository} from './git.js';
+import {
+    setRepository
+} from './git.js';
 
 export async function askRepo() {
     const r = await prompts({
         type: 'confirm',
         name: 'addRepo',
-        message: 'Do you want to clone a repository?'
+        message: 'Do you want to clone a (new) repository?'
     });
 
     if (r.addRepo) {
-        cloneRepo()
+        setRepo()
+    } else{
+        console.log("All repositories are set.")
     }
 };
 
-async function cloneRepo() {
+async function setRepo() {
     const r = await prompts([{
             type: 'text',
             name: 'url',
@@ -26,17 +30,6 @@ async function cloneRepo() {
             message: 'Name repository folder:'
         },
     ]);
-    console.log(r);
-    const branches = setRepository(r.name, r.url)
-    console.log(branches)
-    askBranch(branches)
+    const branches = await setRepository(r.name, r.url)
+    askRepo()
 };
-
-async function askBranch(branches) {
-    const r = await prompts({
-        type: 'select',
-        name: 'branch',
-        message: 'Which branch to deploy?',
-        choices: branches
-    });
-}

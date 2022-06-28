@@ -6,41 +6,57 @@ import accessSync from 'fs';
 
 const REPOSITORY_PATH = path.join(process.cwd(), './src')
 
-export function setRepository(repoName, repoUrl){
-      const repoPath = path.join(REPOSITORY_PATH, repoName)
-      
-      if(!repoCloned(repoPath)){
-        console.info('*');
-        cloneRepo(repoUrl, repoPath);
-        console.info('**');
 
-      } else {
+export async function setRepository(repoFolder, repoUrl) {
+    const repoPath = path.join(REPOSITORY_PATH, repoFolder)
+
+    if (!repoCloned(repoPath)) {
+        await cloneRepo(repoUrl, repoPath)
+        return listBranches(repoPath)
+    } else {
         console.info('***', repoName, ' is already in ', repoPath);
-      }
-      return [
-        { title: 'Red', description: 'This option has a description', value: '#ff0000' },
-        { title: 'Green', value: '#00ff00', disabled: true },
-        { title: 'Blue', value: '#0000ff' }
-      ]
-  };
-  
-  function repoCloned(pathToCloneTo){
-    try {
-      accessSync(pathToCloneTo)
-      return true;
-    } catch {
-      return false
     }
-  }
-  
-  function cloneRepo( repoUrl , pathToCloneTo ) {
-  
+
+};
+
+function repoCloned(pathToCloneTo) {
+    try {
+        accessSync(pathToCloneTo)
+        return true;
+    } catch {
+        return false
+    }
+}
+
+async function cloneRepo(repoUrl, pathToCloneTo) {
     console.info('Cloning repo ', repoUrl, ' to ', pathToCloneTo);
-    return cmd.git.clone(repoUrl, pathToCloneTo)
-  }
-  
-  export async function checkoutBranch(repoName, devBranch) {
-    const repoPath = path.join(REPOSITORY_PATH, repoName)
-    await cmd.git.cwd(repoPath);
-    return cmd.git.checkout(devBranch);
-  }
+    return await cmd.git.clone(repoUrl, pathToCloneTo)
+
+}
+
+async function listBranches(repoPath) {
+    process.chdir(repoPath);
+    const branches = await cmd.git.branch('-a')
+    console.log(typeof branches);
+    console.log(branches)
+    return [{
+            title: 'Red',
+            description: 'This option has a description',
+            value: '#ff0000'
+        },
+        {
+            title: 'Green',
+            value: '#00ff00',
+            disabled: true
+        },
+        {
+            title: 'Blue',
+            value: '#0000ff'
+        }
+    ]
+}
+
+export async function checkoutBranch(repoFolder, devBranch) {
+    const repoPath = path.join(REPOSITORY_PATH, repoFolder)
+    // return cmd.git.checkout(devBranch);
+}
