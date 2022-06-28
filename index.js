@@ -1,3 +1,3 @@
-import { askRepo } from "./modules/inquirer.js";
+import { askRepo } from "./modules/prompt.js";
 
 askRepo()
