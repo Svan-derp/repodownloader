@@ -13,8 +13,6 @@ export async function askRepo() {
 
     if (r.addRepo) {
         setRepo()
-    } else{
-        console.log("All repositories are set.")
     }
 };
 

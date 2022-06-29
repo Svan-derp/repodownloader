@@ -17,13 +17,11 @@ The following steps need to be performed to pull from Github and to build docker
 
 1. Switch into the `cli` folder and run `npm install` to install required modules.  
 
-2. Switch back to the root directory and run `node ./cli/index.js` to see possible options.
-
-3. Run `node ./cli/index.js` to start initialization process.
+2. Run `node run start` to start initialization process.
 
    This will...
 
    1. download all repositories to the `src` folder. Working on the projects will be done there.
-   2. build Docker images using the Dockerfiles located in `containers`
+   2. build Docker images using the Dockerfiles located in `containers folder`
 
-Once completed, you can start working on the repositories sitting in the `src` folder and also run containers as described in the next section.
+Once completed, you can start working on the repositories sitting in the `src` folder.
